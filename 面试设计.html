@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Zac's Full Interview Deck (Verified V4.0)</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #F5F5F7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        /* Card Hover Effect */
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.1), 0 4px 8px -4px rgba(0, 0, 0, 0.05);
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .whitespace-pre-line {
+            white-space: pre-line;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        
+        const Icon = ({ name, size = 20, color = "currentColor", className="" }) => {
+            if (!window.lucide) return null;
+            const iconDef = window.lucide.icons[name];
+            if (!iconDef) return null;
+            try {
+                const svgElement = window.lucide.createElement(iconDef);
+                return (
+                    <svg 
+                        xmlns="http://www.w3.org/2000/svg" 
+                        width={size} 
+                        height={size} 
+                        viewBox="0 0 24 24" 
+                        fill="none" 
+                        stroke={color} 
+                        strokeWidth="2" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round"
+                        className={className}
+                        dangerouslySetInnerHTML={{ __html: svgElement.innerHTML }}
+                    />
+                );
+            } catch (e) { return null; }
+        };
+
+        // --- STRICTLY VERIFIED DATA SOURCE ---
+        // Data has been calibrated against "半结构.pdf", "金融科技专业知识.pdf", and "面试笔记.pdf".
+        
+        const fullData = {
+            "semi_structured": {
+                title: "半结构化面试 (21题)",
+                desc: "源自《半结构.pdf》V4.0 AI-Enhanced 版",
+                icon: "FileText",
+                color: "text-blue-600",
+                bg: "bg-blue-50",
+                questions: [
+                    {
+                        id: "ss1",
+                        q_en: "Introduction of the candidate",
+                        q_zh: "自我介绍 (强调分析能力与AI工具的结合)",
+                        // Source: 
+                        ans_en: "Good morning. My name is Li Zetao. I am a senior student majoring in Fintech at Shenzhen University-Nantes Higher Business School.\n\nI position myself as an AI-empowered Business Analyst. While I have a solid foundation in Python, SQL, and Tableau, what truly sets me apart is my ability to leverage advanced AI models (like GPT-4, Claude 3, and Gemini) and tools like Cursor to automate workflows and solve complex business problems efficiently.\n\nMy passion lies in analysis. During my internships at CITIC Securities and SDIC Securities, I didn't just process data; I applied consulting-style case study methods to deliver actionable insights. For instance, at CITIC, I built an automated data pipeline that improved team efficiency by 90%, essentially achieving 'cost reduction and efficiency increase' (降本增效).\n\nI am applying for the MSc in Fintech and Risk Control to further integrate my technical skills with systemic risk management knowledge.",
+                        // Source: 
+                        ans_zh: "早上好，我叫李泽涛。我是深圳大学-南特高等商学院金融科技专业的大四学生。\n\n我将自己定位为一名AI赋能的商业分析师。虽然我拥有扎实的Python、SQL和Tableau基础，但真正让我与众不同的是我能够利用顶尖AI模型（如GPT-4, Claude 3, Gemini）和Cursor等工具来自动化工作流，高效解决复杂的商业问题。\n\n我的热情在于分析。在中信证券和国投证券实习期间，我不仅仅是处理数据，我还应用咨询风格的Case Study方法来提供可落地的洞察。例如，在中信，我搭建了一套自动化数据管道，将团队效率提升了90%，实质性地实现了“降本增效”。\n\n我申请金融科技与风险控制理学硕士项目，是为了进一步将我的技术技能与系统性的风险管理知识相结合。"
+                    },
+                    {
+                        id: "ss2",
+                        q_en: "What is the specialization of the person?",
+                        q_zh: "申请的专业",
+                        // Source: 
+                        ans_en: "I am applying for the MSc in Fintech and Risk Control, a joint program by Shenzhen University and Audencia Business School.",
+                        // Source: 
+                        ans_zh: "我申请的是金融科技与风险控制理学硕士，这是深圳大学和南特高等商学院的合作项目。"
+                    },
+                    {
+                        id: "ss3",
+                        q_en: "Why did they choose such a specialization?",
+                        q_zh: "为什么选择这个专业？(强调对分析的热爱)",
+                        // Source: 
+                        ans_en: "I chose this specialization because I am passionate about Analytical Decision Making. First, The 'Why': I enjoy the process of dissecting a business problem using logic and data, similar to solving a consulting case study. Second, The 'How': This program specifically covers Data Mining and Risk Management. I believe the future of Fintech belongs to those who can use AI and data not just to trade, but to control risk and optimize business operations.",
+                        // Source: 
+                        ans_zh: "我选择这个专业是因为我对分析决策充满热情。第一，“为什么”：我喜欢用逻辑和数据拆解商业问题的过程，这就像解决咨询公司的Case Study一样。第二，“怎么做”：这个项目特别涵盖了数据挖掘和风险管理。我相信金融科技的未来属于那些不仅能用AI和数据进行交易，还能用它们来控制风险和优化商业运营的人。"
+                    },
+                    {
+                        id: "ss4",
+                        q_en: "Are there subjects that she performs better in?",
+                        q_zh: "擅长科目",
+                        // Source: 
+                        ans_en: "I excel in courses that involve Logic and Data Visualization:\n\n1. Business Intelligence (Tableau): Where I learned to transform raw data into intuitive dashboards.\n\n2. Program Design (Python): Where I mastered the logic to automate tasks.\n\n3. Corporate Finance: Which taught me the fundamental frameworks for business valuation.",
+                        // Source: 
+                        ans_zh: "我在涉及逻辑和数据可视化的课程中表现最好：\n\n1. 商业智能(Tableau)：我学会了将原始数据转化为直观的仪表盘。\n\n2. 程序设计 (Python)：我掌握了自动化任务的逻辑。\n\n3. 公司金融：教会了我商业估值的基本框架。"
+                    },
+                    {
+                        id: "ss5",
+                        q_en: "What are the responsibilities in the position?",
+                        q_zh: "职位职责 (强调自动化与咨询风格汇报)",
+                        // Source: 
+                        ans_en: "At CITIC Securities, my role evolved from a researcher to an Efficiency Specialist:\n\n1. Analytical Reporting: Instead of basic summaries, I used Tableau to visualize industry trends and presented them in a consulting-style PPT format, making insights easier for senior management to digest.\n\n2. Workflow Automation ('Vibe Coding'): I noticed the team struggled with manual data entry. I utilized Cursor and Python scripts to automate these repetitive tasks. This 'AI-assisted coding' approach reduced weekly workload from hours to minutes, perfectly embodying the principle of efficiency improvement.",
+                        // Source: 
+                        ans_zh: "在中信证券，我的角色从研究员演变成了效能专家：\n\n1. 分析汇报：我不仅仅做简单的总结，而是用Tableau可视化行业趋势，并以咨询风格的PPT格式呈现，让管理层更容易消化这些洞察。\n\n2. 工作流自动化('Vibe Coding')：我发现团队在手工录入数据上很挣扎。我利用Cursor和Python脚本自动化了这些重复性任务。这种'AI辅助编程”的方法将每周的工作量从几小时缩减到了几分钟，完美体现了降本增效的原则。"
+                    },
+                    {
+                        id: "ss8",
+                        q_en: "Why apply for a Master's degree at this point?",
+                        q_zh: "为什么现在申请硕士？",
+                        // Source: 
+                        ans_en: "I have mastered the tools (Python, SQL, AI agents), but I need a stronger theoretical framework to guide how I use them. The Fintech and Risk Control program offers deep dives into Financial Institutions Risk Management and Data Mining. I need this structured knowledge to transition from a student who 'knows how to code' to a professional who 'knows how to analyze business risks systematically'.",
+                        // Source: 
+                        ans_zh: "我已经掌握了工具（Python, SQL, Al Agent），但我需要更强的理论框架来指导我如何使用它们。金融科技与风险控制项目提供了金融机构风险管理和数据挖掘的深入课程。我需要这些结构化的知识，来完成从一个“会写代码的学生”到一个“懂得系统性分析商业风险的专业人士”的转变。"
+                    },
+                    {
+                        id: "ss9",
+                        q_en: "What does the candidate want to do immediately after graduation?",
+                        q_zh: "毕业后短期计划 (互联网/Fintech 商业分析师)",
+                        // Source: 
+                        ans_en: "I aim to work as a Business Analyst (BA) or Data Analyst in the Internet or Fintech industry (e.g., Tencent, ByteDance, or Ping An Fintech). My goal is to use my data skills and AI proficiency to drive Product Growth or optimize Risk Control Strategies, focusing on cost reduction and efficiency.",
+                        // Source: 
+                        ans_zh: "我的目标是在互联网或金融科技行业（如腾讯、字节跳动或平安金融科技）担任商业分析师(BA)或数据分析师。我的目标是利用我的数据技能和AI熟练度来驱动产品增长或优化风控策略，核心关注点是降本增效。"
+                    },
+                    {
+                        id: "ss10",
+                        q_en: "How does the programme help achieve that goal?",
+                        q_zh: "项目如何帮助实现目标？",
+                        // Source: 
+                        ans_en: "This program is tailor-made for my goal. Courses like 'Artificial Intelligence & Machine Learning' and 'Big Data in Finance' will sharpen my technical edge. Meanwhile, the 'Risk Management' modules are crucial for the Fintech industry today. The program's strong connection with industry leaders (like the guest lectures mentioned in the brochure) will also help me transition into top tier firms.",
+                        // Source: 
+                        ans_zh: "这个项目是为我的目标量身定制的。像“人工智能与机器学习”和“金融大数据”这样的课程将磨练我的技术优势。同时，“风险管理”模块对于当今的金融科技行业至关重要。项目与行业领袖的紧密联系（如简章中提到的前沿科技讲座）也将帮助我进入顶尖企业。"
+                    },
+                    {
+                        id: "ss16",
+                        q_en: "What are the students strengths?",
+                        q_zh: "核心优势 (AI Native + 咨询分析能力)",
+                        // Source: 
+                        ans_en: "My strengths lie in the intersection of Business Logic and AI Productivity:\n\n1. AI-Native Workflow: I don't just write code; I use Cursor and models like Claude and Gemini to do 'Vibe Coding'. This means I can prototype data tools and automated scripts 5x faster than traditional peers.\n\n2. Consulting-Style Analysis: I am trained in structured problem solving. I can take complex data, analyze it using SQL, visualize it in Tableau, and present it with the clarity of a top-tier consulting deck.",
+                        // Source: 
+                        ans_zh: "我的优势在于商业逻辑和AI生产力的交叉点：\n\n1. AI原生工作流：我不仅仅写代码；我使用Cursor以及Claude和Gemini等模型进行“Vibe Coding”。这意味着我可以比传统同龄人快5倍地制作数据工具和自动化脚本原型。\n\n2. 咨询风格分析：我受过结构化解决问题的训练。我能提取复杂数据，用SQL分析，用Tableau可视化，并以顶级咨询报告的清晰度呈现出来。"
+                    },
+                    {
+                        id: "ss17",
+                        q_en: "What are your weaknesses?",
+                        q_zh: "劣势",
+                        // Source: 
+                        ans_en: "Sometimes I over-rely on quantitative data and may overlook qualitative factors. In business analysis, human behavior and market sentiment are also key. I am improving this by reading more business cases to balance my data-driven mindset with strategic intuition.",
+                        // Source: 
+                        ans_zh: "有时我过分依赖量化数据，可能会忽视定性因素。在商业分析中，人类行为和市场情绪也很关键。我正在通过阅读更多的商业案例来改进这一点，以平衡我的数据驱动思维和战略直觉。"
+                    },
+                    {
+                        id: "ss18",
+                        q_en: "What can they contribute to the group?",
+                        q_zh: "贡献 (团队的技术/AI顾问)",
+                        // Source: 
+                        ans_en: "I can be the 'Digital Enabler' for my cohort. I can teach my classmates how to use Generative AI and Cursor to speed up their research and coding tasks. I can also help the team produce high-quality, consulting-standard presentations for group projects, ensuring our outputs are both analytical and professional.",
+                        // Source: 
+                        ans_zh: "我可以成为同学们的“数字化赋能者”。我可以教同学们如何使用生成式AI和Cursor来加速他们的研究和编程任务。我还可以帮助团队为小组作业制作高质量、咨询标准的演示文稿，确保我们的产出既有分析深度又具备专业度。"
+                    },
+                    {
+                        id: "ss21",
+                        q_en: "What are their extra-curricular interests?",
+                        q_zh: "课外兴趣 (AI Agent)",
+                        // Source: 
+                        ans_en: "I am fascinated by building AI Agents and exploring the latest LLMs. I spend my free time testing how different models (like Grok vs. GPT) handle logic puzzles. This hobby directly supports my career capability to automate workflows and innovate in business scenarios.",
+                        // Source: 
+                        ans_zh: "我对构建AI智能体(Agents)和探索最新的大语言模型非常着迷，我会在空闲时间测试不同模型处理逻辑谜题的能力。"
+                    },
+                    // -- Generic/Legacy Questions (Not in V4 PDF text but kept for completeness based on Interview Notes logic) --
+                    {
+                        id: "ss6",
+                        q_en: "How did you find this job?",
+                        q_zh: "如何找到这份工作？",
+                        ans_en: "This job was introduced to me by my friend, who also works there.",
+                        ans_zh: "主要是通过朋友的介绍和网上的搜寻，看着适合自己的兴趣，并且有实习经验，所以就逐渐开始了这份工作。"
+                    },
+                    {
+                        id: "ss7",
+                        q_en: "How did you transition from school/previous job to next job?",
+                        q_zh: "如何过渡/适应？",
+                        ans_en: "In the face of the unknown, there is always a process of understanding.\n\nFrom school to work: When entering the workplace with no prior experience, it is a disadvantage. However, we should be enthusiastic and down-to-earth in doing our job well, actively paying attention to possible issues in the company, proactively seeking solutions and constantly improving our own abilities and performance.",
+                        ans_zh: "面对未知的事物，总得有一个认知的过程。\n\n从学校到工作：初入职场，没有工作经验，这是劣势，但我们充满热情，脚踏实地地做好本职工作，积极关注公司可能存在的问题，主动寻找对策，不断提升自己的能力和业绩。"
+                    },
+                    {
+                        id: "ss11",
+                        q_en: "Does the student want to work in a specific sector/company/country/department?",
+                        q_zh: "具体想去的行业/公司/部门？",
+                        ans_en: "I want to work in a sector/company/country/department related to finance because it is more suitable for my major.",
+                        ans_zh: "我想去金融相关的行业/公司/国家/部门，因为这更适合我的专业。"
+                    },
+                    {
+                        id: "ss13",
+                        q_en: "Why did the candidate choose to apply for this specific programme/to Audencia/to a French school?",
+                        q_zh: "为什么选这所学校/法国？",
+                        ans_en: "Firstly, I have sufficient interest in this project as it integrates cutting-edge technology with finance, which is in line with the trend of the big data era. Secondly, the strong academic atmosphere and many great scholars here have attracted me. Lastly, Shenzhen University enjoys excellent geographical advantages.",
+                        ans_zh: "首先，我对该项目有足够的兴趣，它是尖端技术与金融的深度整合，非常符合大数据时代的趋势。其次，这里浓厚的学术氛围以及很多很棒的学者吸引了我。最后，深圳大学区位优势非常好。"
+                    },
+                    {
+                        id: "ss14",
+                        q_en: "Has the student ever travelled/studied/worked outside of her home country?",
+                        q_zh: "是否有海外经历？",
+                        ans_en: "No, I haven't done it. But I really hope to have the opportunity to do it.",
+                        ans_zh: "没有，我还没去过。但我真的希望能有机会去。"
+                    },
+                    {
+                        id: "ss15",
+                        q_en: "Has she ever worked in an international team?",
+                        q_zh: "是否有国际团队合作经历？",
+                        ans_en: "No, I haven't done it. But I really hope to have the opportunity to do it.",
+                        ans_zh: "没有，我还没做过。但我真的希望能有机会做。"
+                    },
+                    {
+                        id: "ss19",
+                        q_en: "What are 3 words that describe a good manager?",
+                        q_zh: "形容好经理的3个词",
+                        ans_en: "Visionary (to set clear goals), Empathetic (to understand and support the team), and Decisive (to make tough calls efficiently when needed).",
+                        ans_zh: "有远见（设定清晰目标），有同理心（理解并支持团队），以及果断（在需要时能高效做出艰难决策）。"
+                    }
+                ]
+            },
+            "fintech_knowledge": {
+                title: "金融科技专业知识 (20题)",
+                desc: "源自《金融科技专业知识.pdf》",
+                icon: "Cpu",
+                color: "text-purple-600",
+                bg: "bg-purple-50",
+                questions: [
+                    {
+                        id: "ft1",
+                        q_en: "Please introduce yourself.",
+                        q_zh: "自我介绍 (Fintech Focus)",
+                        // Source: 
+                        ans_en: "Good morning, Professors. My name is Li Zetao. I am applying for the MSc in Fintech and Risk Control.\n\nI define myself as a Data Analyst empowered by AI technology. My core competitiveness comes from three dimensions:\n\n1. Analytical Mindset: I don't just process data; I use consulting case study methodologies to diagnose business problems. I am proficient in Tableau and SQL to visualize these insights.\n\n2. AI-Driven Efficiency: I am an advanced user of LLMs (like Gemini, Claude) and Cursor. I practice \"Vibe Coding\" to rapidly build automation workflows, achieving \"cost reduction and efficiency increase\" in my internships.\n\n3. Solid Foundation: My undergraduate background in Fintech has prepared me well.\n\nI believe my passion for Data Analysis aligns perfectly with this program's curriculum, especially in Data Mining and Risk Management.",
+                        // Source: 
+                        ans_zh: "教授们好，我是李泽涛。我申请的是金融科技与风险控制硕士项目。\n\n我将自己定义为一名AI赋能的数据分析师。我的核心竞争力体现在三个维度：\n\n1. 分析思维：我不只是处理数据，我习惯用咨询公司的Case Study方法论去诊断商业问题，并熟练使用Tableau 和 SQL 将洞察可视化。\n\n2. AI驱动的效率：我是大模型（如Gemini, Claude）和Cursor 的深度用户。我擅长通过“Vibe Coding”快速搭建自动化工作流，在实习中实现了“降本增效”。\n\n3. 扎实基础：我本科的金融科技背景为我打下了良好基础。\n\n我相信我对数据分析的热情与咱们项目（特别是数据挖掘和风险管理课程）非常契合。"
+                    },
+                    {
+                        id: "ft2",
+                        q_en: "Why do you want to apply for the MSc in Fintech and Risk Control at SZU-Nantes?",
+                        q_zh: "为什么申请深大南特的这个硕士项目？",
+                        // Source: 
+                        ans_en: "My career goal is to become a Business Analyst (BA) or Data Analyst in the Internet or Fintech industry. This program is the perfect bridge for three reasons:\n\n1. Curriculum Alignment: Courses like \"Data Mining & Analysis\" and \"Financial Institution Risk Management\" are exactly what I need to upgrade my skills from basic processing to advanced risk modeling.\n\n2. Practical Orientation: I value the \"French Grande École\" style of education which emphasizes corporate practice. I look forward to the industry lectures and internship opportunities.\n\n3. Environment: I want to leverage the AI and Fintech ecosystem in Shenzhen while gaining a global perspective from the French faculty.",
+                        // Source: 
+                        ans_zh: "我的职业目标是成为互联网或金融科技行业的商业分析师(BA)或数据分析师。这个项目从三个方面完美契合我的需求：\n\n1. 课程匹配：项目设置的“数据挖掘与分析”和“金融机构风险管理”课程，正是我从基础数据处理进阶到高级风险建模所急需的。\n\n2. 实践导向：我非常看重法国“精英商学院”的教育模式，它强调企业实践。我非常期待项目中的前沿科技讲座和实习机会。\n\n3. 环境优势：我希望继续利用深圳的AI和Fintech 生态，同时通过法方师资获得国际化视野。"
+                    },
+                    {
+                        id: "ft3",
+                        q_en: "Tell me about your automation project at CITIC Securities.",
+                        q_zh: "中信证券的自动化项目",
+                        // Source: 
+                        ans_en: "Situation: The team spent 1 hour weekly manually processing market reports. It was low-value repetitive work. Task: I aimed to automate this workflow to achieve \"Cost Reduction and Efficiency Increase\" (降本增效). Action:\n\nI adopted a \"Vibe Coding\" approach. I used Cursor (an AI code editor) to rapidly generate Python and VBA scripts. I used SQL to structure the data extraction and Python for cleaning.\n\nThe AI tools allowed me to finish the coding and debugging in just one afternoon, which would normally take days. Result: The process time dropped from 1 hour to 5 minutes (90% efficiency boost). This experience proved that AI + Human Logic is the future of work.",
+                        // Source: 
+                        ans_zh: "情境：团队每周花1小时人工处理市场报告，这是低价值的重复劳动。任务：我的目标是自动化这个流程，实现“降本增效”。行动：\n\n• 我采用了“Vibe Coding”的方法。我利用Cursor（AI代码编辑器）快速生成了Python 和 VBA 脚本。\n\n• 我用SQL 构建数据提取逻辑，用Python 进行清洗。\n\n• AI工具让我仅用一下午就完成了编码和调试，这通常需要几天时间。结果：处理时间从1小时缩短至5分钟（效率提升90%）。这次经历证明了“AI+人类逻辑”才是未来的工作方式。"
+                    },
+                    {
+                        id: "ft4",
+                        q_en: "How did you use data visualization at SDIC Securities?",
+                        q_zh: "在国投证券，你是如何做数据可视化的？",
+                        // Source: 
+                        ans_en: "At SDIC, I managed the monitoring of over 100 private equity products. My approach was not just \"drawing charts,\" but \"Business Storytelling\".\n\n1. Consulting Methodology: I applied Case Study logic to break down the fund performance into key drivers (Alpha, Beta, Drawdown).\n\n2. Tool Implementation: I used Tableau and Excel to build a \"Consulting-style\" dashboard. It was clean, logic-driven, and highlight-oriented.\n\n3. Insight: I identified that certain products had high exposure to specific sectors, which helped the team pinpoint risks 50% faster.\n\nI believe a good analyst tells a story with data, not just shows numbers.",
+                        // Source: 
+                        ans_zh: "在国投证券，我负责监控100多只私募产品。我的方法不仅是“画图”，而是“商业叙事”。\n\n1. 咨询方法论：我应用 Case Study 的逻辑将基金表现拆解为关键驱动因素（Alpha, Beta, 回撤）。\n\n2. 工具落地：我使用 Tableau 和Excel 搭建了“咨询风格”的仪表盘。它界面简洁、逻辑驱动、重点突出。\n\n3. 洞察：我识别出某些产品在特定板块通过度过高，帮助团队将风险定位速度提升了50%。\n\n我认为优秀的数据分析师是用数据讲故事，而不仅仅是展示数字。"
+                    },
+                    {
+                        id: "ft5",
+                        q_en: "You mentioned you use AI models like GPT and Claude. How do they help your studies/work?",
+                        q_zh: "AI模型如何帮助你？",
+                        // Source: 
+                        ans_en: "I see AI models as my \"Copilots\":\n\n1. Coding: I use Claude 3.5 Sonnet and Cursor for code generation and debugging. They handle the syntax, so I can focus on the Business Logic.\n\n2. Analysis: When facing a new business case, I use GPT-4 to brainstorm frameworks (e.g., SWOT, PEST) to ensure my analysis is comprehensive.\n\n3. Learning: They act as my private tutors when I learn new libraries in Python or complex financial concepts like CVaR.",
+                        // Source: 
+                        ans_zh: "我把AI 模型看作我的“副驾驶”(Copilots)：\n\n1. 编程：我用 Claude 3.5 Sonnet 配合 Cursor 进行代码生成和调试。它们处理语法细节，让我能专注于商业逻辑。\n\n2. 分析：面对新的商业案例时，我用GPT-4辅助头脑风暴分析框架（如SWOT, PEST），确保分析的全面性。\n\n3. 学习：在我学习新的Python 库或复杂的金融概念（如CVaR）时，它们是我的私人导师。"
+                    },
+                    {
+                        id: "ft6",
+                        q_en: "How do you understand \"Risk Control\" in Fintech?",
+                        q_zh: "你如何理解金融科技中的“风险控制”？",
+                        // Source: 
+                        ans_en: "In the traditional context, Risk Control relies on collateral and manual audit. But in Fintech, Data is the core of Risk Control.\n\nAs a future analyst, I see Risk Control as a classification problem in Machine Learning. By analyzing user behavior data (using Python/SQL), we can build models (like the Logit model I used in my project) to predict default probabilities.\n\nThis is exactly why I want to study in this program-to learn how to use Big Data and Algorithms to quantify and manage risks systematically.",
+                        // Source: 
+                        ans_zh: "在传统语境下，风控依赖抵押物和人工审核。但在金融科技中，数据是风控的核心。\n\n作为未来的分析师，我看待风控更像是一个机器学习中的分类问题。通过分析用户行为数据（使用Python/SQL），我们可以构建模型（像我在项目中用的Logit 模型）来预测违约概率。\n\n这正是我希望在这个项目中学习的————如何利用大数据和算法系统性地量化和管理风险。"
+                    },
+                    // -- General Knowledge (Implicitly from Part 3 onwards) --
+                    {
+                        id: "ft7",
+                        q_en: "How is Fintech today different from the past?",
+                        q_zh: "今天的金融科技与过去相比有何不同？",
+                        ans_en: "Compared to the past, today's financial technology has advanced technologies, more diverse market tracks, more efficient user services, and changes in policy environment that have all promoted the rapid rise of financial technology, making it an increasingly important component of the financial industry.",
+                        ans_zh: "今天的金融科技与过去相比拥有更先进的技术、更丰富的市场赛道、更高效的用户服务以及政策环境的变化都促进了金融科技的迅速崛起，并且越来越成为金融行业的一大重要组成部分。"
+                    },
+                    {
+                        id: "ft8",
+                        q_en: "Relationship between Fintech firms and Institutions?",
+                        q_zh: "金融科技企业和金融机构之间的关系？",
+                        ans_en: "The relationship between them is one of coexistence of cooperation and competition.\n\nCooperation: Technical cooperation and Channel cooperation.\n\nCompetition: Direct competition (payments) and Substitute competition (P2P).",
+                        ans_zh: "他们之间的关系是合作和竞争共存。\n\n合作：技术合作和渠道合作。\n\n竞争：直接竞争（如支付、投资）和替代品竞争（如数字货币和P2P）。"
+                    },
+                    {
+                        id: "ft9",
+                        q_en: "What is driving Fintech development?",
+                        q_zh: "什么在推动当今金融科技的发展？",
+                        ans_en: "1. Technological Innovation.\n2. User Demand.\n3. Policy Support.\n4. Market Competition.",
+                        ans_zh: "1.技术革新。\n2.用户需求。\n3.政策支持。\n4.市场竞争。"
+                    },
+                    {
+                        id: "ft10",
+                        q_en: "Difference between Digital Currency and Bitcoin?",
+                        q_zh: "数字货币和比特币的区别？",
+                        ans_en: "Digital currency is a type of currency that exists only in digital networks and has no physical form. Bitcoin is one of the earliest forms of digital currency and is decentralized. The two concepts have fundamentally different characteristics.",
+                        ans_zh: "数字货币是一种只存在于数字化网络中的货币，没有实物形态。而比特币是最早出现的数字货币之一，并且是去中心化的。二者的概念有着本质的区别。"
+                    },
+                    {
+                        id: "ft11",
+                        q_en: "How do you understand Traditional Finance?",
+                        q_zh: "对传统金融怎么理解？",
+                        ans_en: "Traditional finance typically provides financial services to institutions or individuals, relying on intermediaries. It has a mature financial market mechanism but faces problems such as low efficiency and insufficient innovation.",
+                        ans_zh: "传统金融通常是面向机构或个人提供金融服务的业务，依赖于中介机构。它具有成熟的金融市场机制，但也面临着效率低、创新不足等问题。"
+                    },
+                    {
+                        id: "ft12",
+                        q_en: "How to view stock investment?",
+                        q_zh: "如何看待股票投资？",
+                        ans_en: "Stock investment is a high-risk form of investing. Investors need to have investment knowledge, risk awareness, and conduct analysis of company fundamentals and market risks.",
+                        ans_zh: "股票投资是一种高风险的投资方式，投资者需要具备一定的投资知识和经验，以及风险意识，并对公司基本面和市场风险进行分析。"
+                    },
+                    {
+                        id: "ft13",
+                        q_en: "Difference between Ordinary and Fintech Companies?",
+                        q_zh: "普通公司和金融科技公司的区别？",
+                        ans_en: "Ordinary companies (e.g., Apple) mainly focus on manufacturing and physical industries. Fintech companies (e.g., Alipay) are internet financial companies providing financial products and services.",
+                        ans_zh: "二者最大的区别在于其经营领域和业务模式。普通公司（如苹果）主要经营实体产业。而金融科技公司（如支付宝）是互联网金融公司，主要为客户提供金融产品和服务。"
+                    },
+                    {
+                        id: "ft14",
+                        q_en: "Name some Fintech companies?",
+                        q_zh: "有哪些金融科技公司？",
+                        ans_en: "Ant Financial, WeBank, Alipay, WeChat Pay, PayPal, Stripe, Square, SoFi, etc.",
+                        ans_zh: "蚂蚁金服、微众银行、支付宝、微信支付、贝宝、Stripe、Square、SoFi等。"
+                    },
+                    {
+                        id: "ft15",
+                        q_en: "What is Fintech?",
+                        q_zh: "什么是金融科技？",
+                        ans_en: "Fintech refers to the application of technology in the financial industry to improve efficiency, convenience, and innovation of financial services.",
+                        ans_zh: "金融科技是指将科技应用于金融领域，以提高金融服务的效率、便利性和创新性。"
+                    },
+                    {
+                        id: "ft16",
+                        q_en: "Industries related to Fintech?",
+                        q_zh: "有关金融科技的行业？",
+                        ans_en: "Online payment, P2P online lending, investment management, data analysis, intelligent customer service, risk management, etc.",
+                        ans_zh: "在线支付、P2P网贷、投资理财、数据分析、智能客服、风险管理等。"
+                    },
+                    {
+                        id: "ft17",
+                        q_en: "Banks related to Fintech?",
+                        q_zh: "有关金融科技专业的银行？",
+                        ans_en: "Bank of China, Ping An Bank, SPDB, WeBank, etc.",
+                        ans_zh: "中国银行、平安银行、浦发银行、微众银行等。"
+                    },
+                    {
+                        id: "ft18",
+                        q_en: "Benefits of Fintech?",
+                        q_zh: "金融科技有什么好处？",
+                        ans_en: "Providing convenient financial services, reducing cost, enhancing risk management, improving credibility, and creating new business models.",
+                        ans_zh: "提供便利的金融服务、降低金融服务成本、增强金融风险管理能力、提高金融服务的可信度、创造新的业务模式。"
+                    },
+                    {
+                        id: "ft19",
+                        q_en: "What is Asset Securitization?",
+                        q_zh: "资产证券化",
+                        ans_en: "Asset securitization is a financing method that involves converting specific assets into securities.",
+                        ans_zh: "资产证券化是指将特定资产转化为证券，并将其在市场上交易、发行和流通的一种融资方式。"
+                    },
+                    {
+                        id: "ft20",
+                        q_en: "Impact of the pandemic on Fintech?",
+                        q_zh: "疫情对金融科技行业的影响？",
+                        ans_en: "Driving online financial business, slowing down investment, stimulating digital transformation, accelerating tech innovation.",
+                        ans_zh: "推动线上金融业务、减缓投资、刺激数字化转型、技术创新的加速。"
+                    }
+                ]
+            },
+            "interview_notes": {
+                title: "面试笔记 (31题)",
+                desc: "源自《面试笔记.pdf》V2.0",
+                icon: "Notebook",
+                color: "text-green-600",
+                bg: "bg-green-50",
+                questions: [
+                    {
+                        id: "in1",
+                        q_en: "What is your work experience? / Tell me about yourself.",
+                        q_zh: "自我介绍/梳理简历",
+                        // Source: 
+                        ans_en: "I define myself as an AI-augmented Fintech Analyst. My core competitiveness lies in combining Data Analysis with Workflow Automation.\n\nFirst, I have strong Business Analysis capabilities. Unlike pure coders, I approach problems with a \"Consulting Mindset\". At SDIC Securities, I didn't just export data; I used SQL and Tableau to build a KPI monitoring system for 100+ products, creating structured, consulting-style reports that helped the team identify risks 50% faster.\n\nSecond, I am a practitioner of \"Vibe Coding\" for efficiency. I am proficient in using top-tier AI models like GPT-4, Claude 3.5, and Gemini, combined with Cursor, to automate repetitive workflows. At CITIC Securities, I used this AI-driven workflow to write Python scripts that reduced weekly reporting time by 90%.\n\nI am applying for the Fintech and Risk Control program because I want to systematically upgrade these skills to solve complex financial risk problems.",
+                        // Source: 
+                        ans_zh: "我将自己定义为一名AI赋能的金融科技分析师。我的核心竞争力在于将商业数据分析与工作流自动化相结合。\n\n首先，我有很强的商业分析能力。不同于纯粹的程序员，我用“咨询顾问思维”来解决问题。在国投证券，我不仅仅是导出数据，而是利用 SQL 和 Tableau 为100多只产品搭建了 KPI 监测体系，输出了结构化的、咨询风格的分析报告，帮助团队将风险识别速度提升了50%。\n\n其次，我是“Vibe Coding”降本增效的践行者。我熟练运用GPT-4, Claude 3.5, Gemini 等顶级模型，结合 Cursor 编辑器来自动化重复性工作流。在中信证券，我利用这种AI驱动的工作流编写 Python 脚本，将周报汇报时间缩短了90%。\n\n我申请金融科技与风险控制项目，是因为我想系统性地升级这些技能，以解决复杂的金融风险问题。"
+                    },
+                    {
+                        id: "in2",
+                        q_en: "Are there subjects that you perform better in?",
+                        q_zh: "最擅长的课程",
+                        // Source: 
+                        ans_en: "My best subjects are Financial Data Analysis and Python Programming. I love the process of \"Case Study\" analysis. In these classes, I excelled at using Python to mine data and using PPT to present business insights logically, similar to how consulting firms operate. This ability to translate data into strategy is my strongest suit.",
+                        // Source: 
+                        ans_zh: "我最擅长的课程是金融数据分析和Python程序设计。我非常喜欢“Case Study(案例分析)”的过程。在这些课上，我擅长用 Python 挖掘数据，并像咨询公司一样用PPT 逻辑清晰地展示商业洞察。这种将数据转化为战略的能力是我最强的强项。"
+                    },
+                    {
+                        id: "in3",
+                        q_en: "Tell me about the projects on your resume.",
+                        q_zh: "简历上的项目",
+                        // Source: 
+                        ans_en: "(Refer to the ETF Challenge) In the ETF Elite Challenge, my role was essentially a Lead Analyst. I didn't just run models; I used AI tools to accelerate our research. I used LLMs to quickly summarize macro news sentiment and Python to quantify industry risks. Ultimately, I visualized our strategy into a professional report. The 12.3% Alpha was the result, but the process of data-driven decision making was what I enjoyed most.",
+                        // Source: 
+                        ans_zh: "在ETF菁英挑战赛中，我的角色本质上是一名首席分析师。我不仅仅是跑模型，我利用AI工具加速了我们的研究。我用大语言模型(LLMs)快速总结宏观新闻情绪，用Python 量化行业风险。最终，我将我们的策略可视化为一份专业的报告。12.3%的Alpha 是结果，但我最享受的是数据驱动决策的过程。"
+                    },
+                    {
+                        id: "in4",
+                        q_en: "Why did you choose Fintech / Why this major?",
+                        q_zh: "为什么选择金融科技？",
+                        // Source: 
+                        ans_en: "I chose Fintech because I love Analysis. In the internet era, traditional financial analysis is too slow. Fintech provides the tools-like Big Data mining and Machine Learning-that allow me to perform High-Frequency Business Analysis. I want to use technology to see the \"truth\" behind the noisy market data, which aligns with my passion for discovering patterns.",
+                        // Source: 
+                        ans_zh: "我选择金融科技是因为我热爱分析。在互联网时代，传统的金融分析太慢了。金融科技提供了工具————比如大数据挖掘和机器学习————让我能够进行高频商业分析。我想用技术去通过嘈杂的市场数据看清“真相”，这符合我发现规律的热情。"
+                    },
+                    {
+                        id: "in6",
+                        q_en: "Why did you choose to apply for THIS specific program (Shenzhen University & Nantes Audencia)?",
+                        q_zh: "为什么选择申请这个特定项目？",
+                        // Source: 
+                        ans_en: "I chose the MSc in Fintech and Risk Control for three specific reasons:\n\n1. Curriculum Fit: Your curriculum, especially courses like \"Financial Data Mining and Analysis\" and \"Financial Institution Risk Management,\" perfectly matches my career goal. I want to apply my data skills specifically to the Risk Control domain.\n\n2. International Perspective: The partnership with Nantes Audencia Business School offers a global view on fintech regulation and compliance, which is critical for multinational internet companies.\n\n3. Location: Shenzhen is the hub of Tencent and Ping An. Studying here gives me the best chance to enter top Internet or Fintech firms.",
+                        // Source: 
+                        ans_zh: "我选择金融科技与风险控制理学硕士项目有三个具体原因：\n\n1. 课程契合：贵项目的课程，特别是《金融数据挖掘与分析》和《金融机构风险管理》，完美契合我的职业目标。我希望将我的数据技能专门应用于风险控制领域。\n\n2. 国际视野：与南特高等商学院的合作提供了关于金融科技监管和合规的全球视野，这对跨国互联网公司至关重要。\n\n3. 地理位置：深圳是腾讯和平安的中心。在这里学习能给我进入顶级互联网或金融科技公司的最佳机会。"
+                    },
+                    {
+                        id: "in9",
+                        q_en: "How are your computer/technical skills?",
+                        q_zh: "计算机/技术技能怎么样？",
+                        // Source: 
+                        ans_en: "I possess a modern, AI-native technical stack:\n\nAnalysis & Visualization: Proficient in SQL for data extraction and Tableau for building consulting-style dashboards.\n\nAI & Automation: I am an advanced user of Cursor. I use \"Vibe Coding\" techniques-prompting Claude 3.5 or GPT-4 to generate and optimize code structures rapidly. This allows me to build tools 10x faster than traditional coding.\n\nProgramming: Solid foundation in Python for data cleaning and modeling.",
+                        // Source: 
+                        ans_zh: "我拥有现代化的、AI 原生的技术栈：\n\n分析与可视化：熟练掌握SQL 取数，并用 Tableau 搭建咨询风格的仪表盘。\n\n• AI与自动化：我是Cursor 的进阶用户。我使用“Vibe Coding”技巧——通过提示 Claude 3.5 或GPT-4来快速生成和优化代码结构。这使我构建工具的速度比传统编程快10倍。\n\n编程：具备扎实的Python基础，用于数据清洗和建模。"
+                    },
+                    {
+                        id: "in_career",
+                        q_en: "Career Plans & Ideal Job Title",
+                        q_zh: "职业规划/理想职位",
+                        // Source: 
+                        ans_en: "Ideal Job Title: Senior Data Analyst or Strategic Business Analyst (BA).\n\nPlan:\n\nIndustry: I aim to join the Internet industry (like Tencent, ByteDance) or Fintech giants (like Ant Group).\n\nRole: I want to work in the Risk Control or Commercial Analysis departments.\n\nValue Proposition: I will use my consulting-style analysis skills to interpret data and use AI automation to build efficient risk monitoring systems. I want to be the bridge between technical data and business strategy.",
+                        // Source: 
+                        ans_zh: "理想职位：高级数据分析师或战略商业分析师(BA)。\n\n规划：\n\n• 行业：我目标是进入互联网行业（如腾讯、字节跳动）或金融科技巨头（如蚂蚁集团）。\n\n• 角色：我希望在风险控制或商业分析部门工作。\n\n• 价值主张：我将利用我的咨询式分析能力来解读数据，并利用AI自动化来构建高效的风险监控系统。我想成为技术数据与商业战略之间的桥梁。"
+                    },
+                    {
+                        id: "in12",
+                        q_en: "What are your strengths?",
+                        q_zh: "你的优势是什么？",
+                        // Source: 
+                        ans_en: "My biggest strength is \"Structured Analysis + AI Efficiency.\" When facing a business problem, I first use Case Study methodologies (like MECE principle) to break it down-a skill I learned from consulting practices. Then, instead of manual execution, I use Cursor and AI models to write code and automate the data retrieval process. This combination makes me both strategically clear and operationally fast.",
+                        // Source: 
+                        ans_zh: "我最大的优势是“结构化分析+AI效率”。面对商业问题时，我首先使用案例分析方法论（如MECE 原则）来拆解问题——这是我从咨询实践中学到的。然后，我不会手动执行，而是利用 Cursor 和AI 模型编写代码，自动化数据检索过程。这种结合使我在战略上清晰，在执行上极快。"
+                    },
+                    {
+                        id: "in32",
+                        q_en: "What current affairs/tech are you following?",
+                        q_zh: "最近关注的时事/技术?",
+                        // Source: 
+                        ans_en: "I am closely following the rise of \"AI Agents\" and \"Vibe Coding\" in the data analysis field. Tools like Cursor and Claude are changing how we do business analysis. We are moving from \"writing code\" to \"architecting solutions.\" I am currently exploring how to build automated analysis agents that can scrape market data, run sentiment analysis, and generate a daily risk report automatically. I believe this is the future of Fintech Risk Control.",
+                        // Source: 
+                        ans_zh: "我密切关注“Al Agent(智能体) 和“Vibe Coding”在数据分析领域的兴起。像Cursor 和 Claude 这样的工具正在改变我们做商业分析的方式。我们正从“写代码”转向“架构解决方案”。我目前正在探索如何构建自动化分析智能体，它可以自动抓取市场数据，运行情绪分析，并自动生成每日风险报告。我相信这是金融科技风险控制的未来。"
+                    },
+                    // -- Generic Questions from previous version --
+                    {
+                        id: "in5",
+                        q_en: "Why apply for a Master's degree at this point?",
+                        q_zh: "为什么现在申请硕士？",
+                        ans_en: "Firstly, objectively speaking, the time for future work is very long, while the time for learning and further education is so short, but the impact is immeasurable. Secondly, I love my major and I want to explore its deeper meaning, thus making myself more excellent and confident. Therefore, I think the earlier I pursue a master's degree, the better.",
+                        ans_zh: "首先，客观来说，往后工作的时间很长，而学习深造的的时间是如此的短暂，但是所起到的作用是无限大的。其次，我喜欢我的专业，我想去挖掘它深处的意义，进而让自己变得更加优秀和自信。所以，我觉得越早读研越好。"
+                    },
+                    {
+                        id: "in7",
+                        q_en: "What was your most challenging work experience?",
+                        q_zh: "最具挑战的工作经历？",
+                        ans_en: "My most challenging work experience was when I was assigned to do accounting for a department store. Although I had the necessary professional knowledge, I had never really dealt with a company's financial records before. I repeatedly checked for discrepancies in the data until I ultimately completed the year-end financial accounting.",
+                        ans_zh: "最具挑战性的工作经历是我被安排在一家百货公司进行账目清算。虽然我具备专业知识，但是却从来没有真正接触过公司账目。我对数据差值反复校对，最终完成了公司的年终财务清算工作。"
+                    },
+                    {
+                        id: "in8",
+                        q_en: "What is your grade ranking?",
+                        q_zh: "你的排名/GPA？",
+                        ans_en: "My GPA is almost 3.5, grade ranking is about the top nine in the class, and the top twenty in the college.",
+                        ans_zh: "我的GPA接近3.5，排名大约是班级前9名，年级前20名。"
+                    },
+                    {
+                        id: "in13",
+                        q_en: "Study planning at the graduate level",
+                        q_zh: "研究生阶段的学习计划",
+                        ans_en: "I have already made plans for my graduate life. In the first year, I will focus on studying professional knowledge and actively participating in my supervisor's research work. In the second year, I will do an internship, transforming my theoretical knowledge into practical skills.",
+                        ans_zh: "我已经为自己的研究生生活做好了计划。第一年，我将全力以赴学习专业知识，积极参与导师的科研工作。第二年，我会去实习，督促自己把理论转化为实践。"
+                    },
+                    {
+                        id: "in14",
+                        q_en: "How do professional courses help you?",
+                        q_zh: "专业课对你有什么帮助？",
+                        ans_en: "Firstly, I studied finance as my major in undergraduate school, which enables me to quickly adapt to the course of study. Secondly, I have a strong passion for my major. Lastly, I have a strong aptitude for learning.",
+                        ans_zh: "首先，我本科就学习的金融专业，使我能够尽快的适应学习课程。其次，我深深热爱我的专业。最后，我的学习能力强。"
+                    },
+                    {
+                        id: "in15",
+                        q_en: "How is your Math?",
+                        q_zh: "数学怎么样？",
+                        ans_en: "I feel that I am doing okay and I am able to quickly understand and absorb most knowledge. As long as I am given guidance and time, I can guarantee that I will not fall behind others.",
+                        ans_zh: "自我感觉还行，对于大部分知识能够快速理解和吸收。只要给我指导和时间，我能保证不落后于他人。"
+                    },
+                    {
+                        id: "in16",
+                        q_en: "When will you take IELTS?",
+                        q_zh: "雅思什么时候考？",
+                        ans_en: "We are already preparing for it and it is highly likely that we will pass the test in half a month.",
+                        ans_zh: "已经在准备，大概率会在半个月考出来。"
+                    },
+                    {
+                        id: "in17",
+                        q_en: "How do you plan to study these courses?",
+                        q_zh: "打算怎么学习这些课程？",
+                        ans_en: "I plan to consult with my teachers and senior peers about the tasks and procedures of the course, and develop a study plan to have a clear understanding of where to focus my efforts.",
+                        ans_zh: "我打算先去咨询老师和学长学姐关于课程大概的任务和流程，制定一个学习计划表，做到心中有数。"
+                    },
+                    {
+                        id: "in19",
+                        q_en: "What are 3 words that describe a good manager?",
+                        q_zh: "形容好经理的3个词",
+                        ans_en: "Responsible, Honest, careful.",
+                        ans_zh: "负责、诚实、细心。"
+                    },
+                    {
+                        id: "in20",
+                        q_en: "What are your extra-curricular interests?",
+                        q_zh: "课外兴趣",
+                        ans_en: "I enjoy reading science fiction novels, such as The Three-Body Problem. Science fiction broadens my perspective, enriches my imagination, and trains my innovative thinking ability.",
+                        ans_zh: "我喜欢阅读科幻小说，例如三体。科幻拓宽我的视野，丰富想象力，锻炼创新思维能力。"
+                    },
+                    {
+                        id: "in21",
+                        q_en: "Has the student ever travelled/studied/worked outside of her home country?",
+                        q_zh: "是否有海外经历？",
+                        ans_en: "No, I haven't done it. But I really hope to have the opportunity to do it.",
+                        ans_zh: "没有，我还没做过。但我真的希望能有机会做。"
+                    },
+                    {
+                        id: "in22",
+                        q_en: "Has you ever worked in an international team?",
+                        q_zh: "是否在国际团队工作过？",
+                        ans_en: "No, I haven't done it, But I really hope to have the opportunity to do it.",
+                        ans_zh: "没有，我还没做过。但我真的希望能有机会做。"
+                    },
+                    {
+                        id: "in23",
+                        q_en: "What are the responsibilities in the position?",
+                        q_zh: "之前职位的职责",
+                        ans_en: "Department Store: Manage daily expenses, conduct account settlement. Math Teacher: Vividly explain textbook knowledge.",
+                        ans_zh: "百货公司：管理日常经费，进行账目清算。数学老师：生动讲解课本知识。"
+                    },
+                    {
+                        id: "in24",
+                        q_en: "How did you find this job?",
+                        q_zh: "如何找到工作的？",
+                        ans_en: "Mainly through friends' referrals and searching online.",
+                        ans_zh: "主要是通过朋友的介绍和网上的搜寻。"
+                    },
+                    {
+                        id: "in25",
+                        q_en: "How did you transition from school/previous job to next job?",
+                        q_zh: "如何过渡/适应？",
+                        ans_en: "In the face of the unknown, there is always a process of understanding. From school to work: enthusiastic and down-to-earth.",
+                        ans_zh: "面对未知的事物，总得有一个认知的过程。从学校到工作：充满热情，脚踏实地。"
+                    },
+                    {
+                        id: "in26",
+                        q_en: "What does the candidate want to do immediately after graduation?",
+                        q_zh: "毕业后立即想做什么？",
+                        ans_en: "After graduation, I will first look for a job to accumulate experience, achieve financial independence, and ease the pressure on my parents.",
+                        ans_zh: "毕业后先找一份工作积累经验，实现经济独立，缓解父母的压力。"
+                    },
+                    {
+                        id: "in27",
+                        q_en: "How does the programme help achieve that goal?",
+                        q_zh: "项目如何帮助实现目标？",
+                        ans_en: "First of all, this project can enhance my abilities and broaden my horizons. Secondly, it is an in-depth integration of cutting-edge technology and finance.",
+                        ans_zh: "首先，这个项目能够提高我的能力，拓宽我的视野。其次，它是尖端技术与金融的深度整合。"
+                    },
+                    {
+                        id: "in28",
+                        q_en: "Does the student want to work in a specific sector/company?",
+                        q_zh: "想去特定行业/公司吗？",
+                        ans_en: "That's for sure. However, it requires self-effort, social networks, accumulated experience, and skills development.",
+                        ans_zh: "那是肯定的。但是这需要自身努力、人脉资源、经验累积、能力培养等等。"
+                    },
+                    {
+                        id: "in29",
+                        q_en: "What would the ideal job title be for the candidate?",
+                        q_zh: "理想职位",
+                        ans_en: "Firstly, I would like to start from the grassroots level. Secondly, I will humbly seek advice and learn from others.",
+                        ans_zh: "首先，我想先从基层开始做起。其次，向他人虚心请教与学习。"
+                    },
+                    {
+                        id: "in30",
+                        q_en: "What can you contribute to the group?",
+                        q_zh: "你能做出什么贡献？",
+                        ans_en: "1. Complete work tasks. 2. Innovative thinking. 3. Teamwork. 4. Customer service.",
+                        ans_zh: "1.完成工作任务。2.创新思路。3.团队协作。4.客户服务。"
+                    },
+                    {
+                        id: "in31",
+                        q_en: "What are you expecting from the group in return?",
+                        q_zh: "你期望获得什么？",
+                        ans_en: "1. Professional skills improvement. 2. Career development. 3. Job satisfaction. 4. Colleague relationships.",
+                        ans_zh: "1.专业能力提升。2.生涯发展。3.工作满意度。4.同事关系。"
+                    }
+                ]
+            }
+        };
+
+        const QuestionCard = ({ item }) => {
+            const [isOpen, setIsOpen] = useState(false);
+
+            return (
+                <div 
+                    onClick={() => setIsOpen(!isOpen)}
+                    className={`
+                        rounded-2xl p-6 cursor-pointer border border-white h-full flex flex-col
+                        ${isOpen ? 'bg-white shadow-xl ring-1 ring-black/5' : 'bg-white/80 hover:bg-white shadow-sm card-hover'}
+                        select-none transition-all duration-300 relative overflow-hidden group
+                    `}
+                >
+                    <div className="flex justify-between items-start gap-4">
+                        <div className="flex-1 z-10">
+                            <h3 className={`text-base font-bold leading-snug ${isOpen ? 'text-gray-900' : 'text-gray-800'}`}>
+                                {item.q_en}
+                            </h3>
+                            <p className="text-sm text-gray-500 mt-2 font-medium">{item.q_zh}</p>
+                        </div>
+                        <div className={`
+                            w-8 h-8 rounded-full flex items-center justify-center transition-colors flex-shrink-0 z-10
+                            ${isOpen ? 'bg-black text-white' : 'bg-gray-100 text-gray-400 group-hover:bg-gray-200'}
+                        `}>
+                            <Icon name={isOpen ? "ChevronUp" : "ChevronDown"} size={16} />
+                        </div>
+                    </div>
+
+                    <div className={`overflow-hidden transition-all duration-500 ease-in-out ${isOpen ? 'max-h-[1200px] opacity-100 mt-6' : 'max-h-0 opacity-0'}`}>
+                        <div className="pt-4 border-t border-gray-100 relative z-10">
+                            <p className="text-gray-800 text-sm leading-relaxed whitespace-pre-line font-medium">
+                                {item.ans_en}
+                            </p>
+                            <div className="mt-4 p-4 bg-gray-50/80 rounded-xl border border-gray-100/50">
+                                <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-line">
+                                    {item.ans_zh}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const App = () => {
+            const [activeTab, setActiveTab] = useState("semi_structured");
+            const [scrolled, setScrolled] = useState(false);
+
+            useEffect(() => {
+                const handleScroll = () => setScrolled(window.scrollY > 10);
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            const currentData = fullData[activeTab];
+
+            return (
+                <div className="min-h-screen pb-12">
+                    {/* Header */}
+                    <header className={`
+                        fixed top-0 w-full z-50 transition-all duration-300
+                        ${scrolled ? 'glass shadow-sm' : 'bg-[#F5F5F7]'}
+                    `}>
+                        <div className="max-w-[1600px] mx-auto px-6 h-20 flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                                <div className="w-10 h-10 bg-gradient-to-br from-gray-800 to-black rounded-xl flex items-center justify-center shadow-lg text-white font-bold text-lg transform hover:scale-105 transition-transform">
+                                    Z
+                                </div>
+                                <div>
+                                    <h1 className="text-xl font-bold text-gray-900 tracking-tight">Interview Deck</h1>
+                                    <div className="flex items-center gap-2">
+                                        <p className="text-xs text-gray-500 font-medium tracking-wide uppercase">Verified V4.0 Source</p>
+                                        <span className="bg-gray-200 text-gray-600 text-[10px] px-1.5 rounded-md font-bold">{currentData.questions.length} Qs</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            {/* Desktop Tab Bar */}
+                            <div className="hidden md:flex bg-gray-200/50 p-1 rounded-lg">
+                                {Object.entries(fullData).map(([key, data]) => (
+                                    <button
+                                        key={key}
+                                        onClick={() => setActiveTab(key)}
+                                        className={`
+                                            px-6 py-2 rounded-md text-sm font-semibold transition-all duration-300
+                                            ${activeTab === key ? 'bg-white text-gray-900 shadow-sm scale-105' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-200/50'}
+                                        `}
+                                    >
+                                        {data.title}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                        
+                        {/* Mobile Tab Bar */}
+                        <div className="md:hidden px-4 pb-3">
+                            <div className="bg-gray-200/50 p-1 rounded-xl flex overflow-x-auto no-scrollbar">
+                                {Object.entries(fullData).map(([key, data]) => (
+                                    <button
+                                        key={key}
+                                        onClick={() => setActiveTab(key)}
+                                        className={`
+                                            flex-1 py-2 px-2 rounded-lg text-xs font-semibold transition-all duration-200 whitespace-nowrap
+                                            ${activeTab === key ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500'}
+                                        `}
+                                    >
+                                        {data.title.split(' ')[0]}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </header>
+
+                    <div className="h-32 md:h-28"></div>
+
+                    <main className="max-w-[1600px] mx-auto px-6 animate-fade-in">
+                        {/* Category Banner */}
+                        <div className={`mb-8 p-8 rounded-3xl ${currentData.bg} border border-white/50 shadow-sm flex items-center space-x-6 transform transition-all hover:scale-[1.01]`}>
+                            <div className={`p-4 rounded-2xl bg-white shadow-md ${currentData.color}`}>
+                                <Icon name={currentData.icon} size={32} />
+                            </div>
+                            <div>
+                                <h2 className={`text-2xl font-bold ${currentData.color}`}>{currentData.title}</h2>
+                                <p className="text-sm text-gray-600 mt-2 font-medium">{currentData.desc}</p>
+                            </div>
+                        </div>
+
+                        {/* Wide Grid Layout */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 pb-12">
+                            {currentData.questions.map((q) => (
+                                <QuestionCard key={q.id} item={q} />
+                            ))}
+                        </div>
+
+                        <div className="text-center pb-8 border-t border-gray-200/50 pt-8">
+                            <p className="text-gray-400 text-xs font-medium tracking-widest uppercase">Designed for Zac</p>
+                            <p className="text-gray-300 text-[10px] mt-2">Strictly Calibrated against V4/V2 PDFs</p>
+                        </div>
+                    </main>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
